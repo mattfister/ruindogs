@@ -1,0 +1,1 @@
+This is a generator for textual dungeons.
