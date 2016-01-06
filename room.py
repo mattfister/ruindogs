@@ -7,13 +7,15 @@ import random
 class Room:
 
     def __init__(self):
-        self.name = templates.Template("{{adj}} {{room}}").render(adj=vocab.get_place_adj(),
-                                                                  room=vocab.get_ruin_room())
+        self.simple_name = vocab.get_ruin_room()
+        self.adj = vocab.get_place_adj()
 
-        self.name = (random.choice([a_or_an.a_or_an(self.name), 'the']) + " " + self.name).title()
+        self.full_name = templates.Template("the {{adj}} {{room}}").render(adj=self.adj,
+                                                                  room=self.simple_name)
+        self.name = ('the ' + self.simple_name)
 
 
 if __name__ == '__main__':
     room = Room()
-    print(room.name)
+    print(room.full_name)
 
