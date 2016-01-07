@@ -2,6 +2,9 @@ from room import Room
 from random import choice
 from freezeword import old_language_generator
 from freezeword import templates
+from freezeword import md_writer
+
+
 __author__ = "Matt Fister"
 
 
@@ -20,8 +23,11 @@ class Ruin(object):
             if new_room is not None:
                 self.rooms.append(new_room)
 
-    def __str__(self):
-        ret_str = self.name + "\n"
+    def render(self):
+        md_writer.print_title("Ruin Dogs")
+        md_writer.print_sub_title(self.name)
+        md_writer.print_title("Locations")
         for room in self.rooms:
-            ret_str += room.__str__() + "\n"
-        return ret_str
+            room.render()
+            md_writer.end_paragraph()
+        md_writer.end_novel(css='https://mattfister.github.io/nanogenmo2015/samples/base.css')

@@ -3,6 +3,7 @@ from freezeword import templates
 from freezeword import a_or_an
 import random
 from connector import Connector
+from freezeword import md_writer
 
 __author__ = "Matt Fister"
 
@@ -51,23 +52,22 @@ class Room:
     def set_connection(self, direction, connection):
         self.connections[direction] = connection
 
-    def __str__(self):
-        ret_str = self.full_name.title() + "\n"
+    def render(self):
+        md_writer.print_chapter_subheading(self.full_name.title())
         for prop in self.props:
-            ret_str += templates.Template("There is {{aoran}} {{prop}} here.").render(aoran=a_or_an.a_or_an(prop), prop=prop) + "\n"
+            md_writer.print_list_item(templates.Template("There is {{aoran}} {{prop}} here.").render(aoran=a_or_an.a_or_an(prop), prop=prop) + "\n")
         for key, val in self.connections.items():
             if val is None:
                 pass
             elif val == 'entrance':
-                ret_str += templates.Template("To the {{direction}} is the entrance.").render(direction=key) + "\n"
+                 md_writer.print_list_item(templates.Template("To the {{direction}} is the entrance.").render(direction=key) + "\n")
             else:
                 connection = val[0]
                 connected_room = val[1]
-                ret_str += templates.Template("To the {{direction}} {{connection}} {{leadsto}} {{room}}.").render(
+                md_writer.print_list_item(templates.Template("To the {{direction}} {{connection}} {{leadsto}} {{room}}.").render(
                     direction=key, connection=connection.description,
                     leadsto="leads to|connects to|opens to",
-                    room=connected_room.full_name) + "\n"
-        return ret_str
+                    room=connected_room.full_name) + "\n")
 
 if __name__ == '__main__':
     room = Room()
