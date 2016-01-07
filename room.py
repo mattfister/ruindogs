@@ -2,6 +2,9 @@ from freezeword import vocab
 from freezeword import templates
 from freezeword import a_or_an
 import random
+from connector import Connector
+
+__author__ = "Matt Fister"
 
 
 class Room:
@@ -15,6 +18,9 @@ class Room:
         self.name = ('the ' + self.simple_name)
 
         self.connections = {'north': None, 'south': None, 'east': None, 'west': None}
+        self.opposite_directions = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
+
+        self.props = [vocab.get_fantasy_prop(), vocab.get_fantasy_prop()]
 
         self.north = None
         self.south = None
@@ -30,10 +36,11 @@ class Room:
                 if value is None:
                     empty_connections[key] = value
             new_direction = random.choice(list(empty_connections.keys()))
+            new_connector = Connector()
             new_room = Room()
-            self.connections[new_direction] = new_room
+            self.connections[new_direction] = (new_connector, new_room)
+            new_room.set_connection(self.opposite_directions[new_direction], (new_connector, self))
             return new_room
-
 
     def is_fully_connected(self):
         for key, val in self.connections.items():
@@ -43,6 +50,24 @@ class Room:
 
     def set_connection(self, direction, connection):
         self.connections[direction] = connection
+
+    def __str__(self):
+        ret_str = self.full_name.title() + "\n"
+        for prop in self.props:
+            ret_str += templates.Template("There is {{aoran}} {{prop}} here.").render(aoran=a_or_an.a_or_an(prop), prop=prop) + "\n"
+        for key, val in self.connections.items():
+            if val is None:
+                pass
+            elif val == 'entrance':
+                ret_str += templates.Template("To the {{direction}} is the entrance.").render(direction=key) + "\n"
+            else:
+                connection = val[0]
+                connected_room = val[1]
+                ret_str += templates.Template("To the {{direction}} {{connection}} {{leadsto}} {{room}}.").render(
+                    direction=key, connection=connection.description,
+                    leadsto="leads to|connects to|opens to",
+                    room=connected_room.full_name) + "\n"
+        return ret_str
 
 if __name__ == '__main__':
     room = Room()
