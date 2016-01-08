@@ -1,0 +1,42 @@
+body, #content, #container {
+    width: 100%;
+    margin: 0;
+    float: none;
+    background: rgba(255,252,189,1);
+    background: -moz-linear-gradient(left, rgba(255,252,189,1) 0%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,252,189,1)), color-stop(47%, rgba(245,245,245,1)), color-stop(100%, rgba(237,237,237,1)));
+    background: -webkit-linear-gradient(left, rgba(255,252,189,1) 0%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 100%);
+    background: -o-linear-gradient(left, rgba(255,252,189,1) 0%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 100%);
+    background: -ms-linear-gradient(left, rgba(255,252,189,1) 0%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 100%);
+    background: linear-gradient(to right, rgba(255,252,189,1) 0%, rgba(245,245,245,1) 47%, rgba(237,237,237,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fffcbd', endColorstr='#ededed', GradientType=1 );
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+}
+
+body {
+    font: 1em Georgia, "Times New Roman", Times, serif;
+    color: #000; 
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: center;
+    color: #000;
+}
+
+h1 { font-size: 250%; }
+h2 { font-size: 175%; }
+h3 { font-size: 135%; }
+h4 { font-size: 100%; font-variant: small-caps; }
+h5 { font-size: 100%; }
+h6 { font-size: 90%; font-style: italic; }
+
+a:link, a:visited {
+	    color: #00c;
+	    font-weight: bold;
+	    text-decoration: underline; }
+#content a:link:after, #content a:visited:after {
+			   content: " (" attr(href) ") ";
+}
