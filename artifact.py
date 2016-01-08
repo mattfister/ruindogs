@@ -26,7 +26,7 @@ class Artifact(object):
                                              "repel insects|frighten children|become a force of destiny|become lost|burn the mind|sing the hymn of the damned|"
                                              "curse all nearby|illuminate its surroundings"))
     def render(self):
-        md_writer.print_chapter_sentence('<a name="' + self.name.replace(" ", "-") + '"></a>'+"**"+self.name+"**")
+        md_writer.print_chapter_subheading('<a name="' + self.name.replace(" ", "-") + '"></a>'+self.name)
         md_writer.end_chapter()
         md_writer.print_chapter_sentence(self.form)
         md_writer.print_chapter_sentence(self.when_sentence)
