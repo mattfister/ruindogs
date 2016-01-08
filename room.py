@@ -18,6 +18,8 @@ class Room:
                                                                   room=self.simple_name)
         self.name = ('the ' + self.simple_name)
 
+        self.details = [self.generate_room_description()]
+
         self.connections = {'north': None, 'south': None, 'east': None, 'west': None}
         self.opposite_directions = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
 
@@ -27,6 +29,18 @@ class Room:
         self.south = None
         self.east = None
         self.west = None
+
+        self.artifact = None
+
+    def generate_room_description(self):
+        return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
+                                                      growsentence="{{plantphrase}} {{grow}} {{plantlocation}}.",
+                                                          plantphrase="{{color}} {{plant}}",
+                                                      plant="razorgrass is|mushrooms are|moss is|lichens are|ferns are",
+                                                      color="Red|Green|Yellow|Blue|Gray|White",
+                                                      grow="growing|sprouting|decaying|swaying",
+                                                      plantlocation="in cracks in the floor|in broken urns|in a patch on the floor|from the walls|from the ceiling")
+
 
     def add_connected_room(self):
         if self.is_fully_connected():
@@ -53,9 +67,14 @@ class Room:
         self.connections[direction] = connection
 
     def render(self):
-        md_writer.print_chapter_subheading(self.full_name.title())
+        md_writer.print_chapter_subheading(self.full_name.title() + '<a name="' + self.full_name.title() + '"></a>')
+        for sentence in self.details:
+            md_writer.print_chapter_sentence(sentence)
+        md_writer.print_chapter_sentence("\n\n")
         for prop in self.props:
             md_writer.print_list_item(templates.Template("There is {{aoran}} {{prop}} here.").render(aoran=a_or_an.a_or_an(prop), prop=prop) + "\n")
+        if self.artifact is not None:
+            md_writer.print_list_item(templates.Template("{{artifact}} is here.").render(artifact="["+self.artifact.name+"]"+"(#"+self.artifact.name.replace(" ", "-")+")") + "\n")
         for key, val in self.connections.items():
             if val is None:
                 pass
@@ -64,10 +83,10 @@ class Room:
             else:
                 connection = val[0]
                 connected_room = val[1]
-                md_writer.print_list_item(templates.Template("To the {{direction}} {{connection}} {{leadsto}} {{room}}.").render(
+                md_writer.print_list_item(templates.Template("To the {{direction}} {{connection}} {{leadsto}} {{room}}.\n").render(
                     direction=key, connection=connection.description,
                     leadsto="leads to|connects to|opens to",
-                    room=connected_room.full_name) + "\n")
+                    room="["+connected_room.full_name+"]"+"(#"+connected_room.full_name.replace(" ","-")+")"))
 
 if __name__ == '__main__':
     room = Room()
