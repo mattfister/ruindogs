@@ -24,7 +24,18 @@ class Ruin(object):
 
         self.rooms = [self.entrance]
 
-        self.location_description = self.gen_location_description()
+        self.location_description = templates.Template('{{sentence}}').render(sentence="{{name}} is {{locationphrase}} {{placement}}.",
+                                                         name=self.name.title(),
+                                                         locationphrase="located in|located on|constructed on|located under",
+                                                         placement="a_or_an {{adj}} tree|a_or_an {{adj}} plain|a_or_an {{adj}} city|a_or_an {{adj}} rift|a_or_an {{adj}} mountain",
+                                                         adj="alien|obsidion|crystal|spikey|giant|flooded|ruined|volcanic|cursed|poisoned|haunted|broken")
+
+        self.parts_description = (templates.Template('{{sentence}}')
+                                  .render(sentence="{{segment}} of {{name}} are {{state}}.",
+                                          segment="Parts|Some areas|Regions|Some rooms",
+                                          name=self.name.title()+"|it",
+                                          state="cursed|corrupted|flooded|{adj} hot|{adj} cold|frozen|foggy|inaccessible|flooded",
+                                          adj="incredibly|somewhat|unbearably"))
 
         self.artifact = Artifact()
 
@@ -37,17 +48,11 @@ class Ruin(object):
 
         random_room.artifact = self.artifact
 
-    def gen_location_description(self):
-        return templates.Template('{{sentence}}').render(sentence="{{name}} is {{locationphrase}} {{placement}}.",
-                                                         name=self.name.title(),
-                                                         locationphrase="located in|located on|constructed on|located under",
-                                                         placement="a_or_an {{adj}} tree|a_or_an {{adj}} plain|a_or_an {{adj}} city|a_or_an {{adj}} rift|a_or_an {{adj}} mountain",
-                                                         adj="alien|obsidion|crystal|spikey|giant|flooded|ruined|volcanic|cursed|poisoned|haunted|broken")
-
     def render(self):
         md_writer.print_title("Ruin Dogs")
         md_writer.print_sub_title(self.name)
         md_writer.print_chapter_sentence(self.location_description)
+        md_writer.print_chapter_sentence(self.parts_description)
         md_writer.end_paragraph()
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Artifact")
