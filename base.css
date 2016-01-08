@@ -12,7 +12,7 @@ body, #content, #container {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fffcbd', endColorstr='#ededed', GradientType=1 );
     margin-left: auto;
     margin-right: auto;
-    max-width: 600px;
+    max-width: 800px;
 }
 
 body {
@@ -20,11 +20,18 @@ body {
     color: #000; 
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1 {
     font-family: Helvetica, Arial, sans-serif;
-    text-align: center;
+    text-align: left;
     color: #000;
 }
+
+h2,h3,h4,h5,h6 {
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: left;
+    color: #000;
+}
+
 
 h1 { font-size: 250%; }
 h2 { font-size: 175%; }
@@ -34,9 +41,10 @@ h5 { font-size: 100%; }
 h6 { font-size: 90%; font-style: italic; }
 
 a:link, a:visited {
-	    color: #00c;
+	    color: #111;
 	    font-weight: bold;
-	    text-decoration: underline; }
+}
+
 #content a:link:after, #content a:visited:after {
 			   content: " (" attr(href) ") ";
 }
