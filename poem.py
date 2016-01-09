@@ -8,6 +8,7 @@ __author__ = "Matt Fister"
 
 class Poem(object):
     def __init__(self, ruin):
+        self.ruin = ruin
         self.lines = []
         opening_line = self.generate_opening()
         self.lines.append(opening_line)
@@ -24,14 +25,16 @@ class Poem(object):
                 self.lines.append(self.generate_end_line())
 
     def generate_opening(self):
+        artifact_name = md_writer.phrase_as_link(self.ruin.artifact.name)
         return (templates.Template("{{line}}")
-                .render(line="{{metaphor}}|{{people}}",
+                .render(line="{{metaphor}}|{{people}}|{{artifact}}",
+                        artifact=artifact_name,
                         metaphor="A_or_an {{metone}} is a_or_an {{mettwo}}",
                         metone=vocab.get_ogden_basic_noun(),
                         mettwo=vocab.get_noun(),
                         people="{{peoplephrase}} {{peopleare}}",
                         peoplephrase="We are|You are|They are|All of us are",
-                        peopleare="cursed|dying|corrupted|free|joyful|sorrowful|lost|frozen|damned|hidden|love|maddened"))
+                        peopleare="cursed|dying|corrupted|free|joyful|sorrowful|lost|frozen|damned|hidden|love|maddened|envious"))
 
     def generate_middle_line(self):
         return (templates.Template("{{line}}")

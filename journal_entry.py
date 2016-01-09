@@ -25,24 +25,21 @@ class Journal_Entry(object):
                                       artifact=md_writer.phrase_as_link(ruin.artifact.name),
                                       room_name=room_name,
                                       artifact_verb="found|lost|discovered|am seeking|can not find|want to find|worship",
-                                      place_phrase="discovered|found|am looting|am defending|am hiding in|am worshipping|am fleeing"))
+                                      place_phrase="was injured in|hid something in|discovered|found|am looting|am defending|am hiding in|am worshipping|am fleeing"))
 
         if random.random() < 0.5:
             self.lines.append(self.generate_advice())
 
         if len(self.lines) == 0:
-            self.lines.append(old_language_generator.random_word().title() + " "
-                              + old_language_generator.random_word() + " "
-                              + old_language_generator.random_word() + " "
-                              + old_language_generator.random_word() + " "
-                              + old_language_generator.random_word() + ".")
+            self.lines.append(self.generate_advice())
 
 
     def generate_advice(self):
         return templates.Template("{{advice}}.").render(
-            advice="{{advice_verb}} {{advice_gerund}}",
+            advice="{{advice_verb}} {{advice_gerund}}|{{phrase}}",
             advice_verb="Try|Maybe try|Do not try|I tried|I could not try|I thought about",
-            advice_gerund="digging|hiding|running|leaving|jumping|swimming|cowering|praying|fighting|dying|giving up"
+            advice_gerund="digging|hiding|running|leaving|jumping|swimming|cowering|praying|fighting|dying|giving up",
+            phrase="Go away|Run away|Hide here|Leave at once|Dig here|Treasure here|A trap ahead|Leave now"
         )
 
     def render(self):

@@ -20,7 +20,21 @@ class Room:
                                                                   room=self.simple_name)
         self.name = ('the ' + self.simple_name)
 
-        self.details = [self.generate_room_description()]
+        self.details = []
+
+        if random.random() < 0.5:
+            self.details.append(self.generate_flora_description())
+
+        if random.random() < 0.5:
+            self.details.append(self.generate_atmosphere_description())
+
+        if random.random() < 0.5:
+            self.details.append(self.generate_walls_description())
+
+        if random.random() < 0.5:
+            self.details.append(self.generate_floor_description())
+
+        random.shuffle(self.details)
 
         self.connections = {'north': None, 'south': None, 'east': None, 'west': None}
         self.opposite_directions = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
@@ -34,13 +48,14 @@ class Room:
 
         self.artifact = None
 
+        self.engraving_location = random.choice(["the wall","the floor","the ceiling","a monolith","a tablet","a stone"])
+
         self.engraving = None
         if random.random() < 0.5:
             self.engraving = Engraving(self.ruin)
 
 
-
-    def generate_room_description(self):
+    def generate_flora_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
                                                       growsentence="{{plantphrase}} {{grow}} {{plantlocation}}.",
                                                           plantphrase="{{color}} {{plant}}",
@@ -49,6 +64,25 @@ class Room:
                                                       grow="growing|sprouting|decaying|swaying",
                                                       plantlocation="in cracks in the floor|in broken urns|in a patch on the floor|from the walls|from the ceiling")
 
+    def generate_atmosphere_description(self):
+        return (templates.Template("{{sentence}}")
+                .render(sentence="The air {{smells_or_tastes}} {{smell}} here.",
+                        smells_or_tastes="smells|tastes|seems",
+                        smell="salty|like ozone|like bloody|musty|dry|magically charged|humid|nauseating|poisonous|sticky"))
+
+    def generate_walls_description(self):
+        return (templates.Template("{{sentence}}")
+                .render(sentence="The {{material}} walls are {{descriptor}}.",
+                        material="brick|wooden|stone|concrete|crystal|glass|obsidion|metallic|mirrored",
+                        descriptor="pristine|ruined|scratched|caving in|unsettled|bloodstained|covered in mold"))
+
+    def generate_floor_description(self):
+        return (templates.Template("{{sentence}}")
+                .render(sentence="The floor is {{floor_phrase}}.",
+                        floor_phrase="flooded with {{number}} inch deep {{temp}} water|sticky|bloodstained|cluttered with {{clutter}}|smooth|glossy",
+                        number="one|two|three|four|five|six|seven|eight|nine",
+                        temp="cold|cool|lukewarm|hot|scalding",
+                        clutter="debris|bones|rocks|shells|broken glass|ashes"))
 
     def add_connected_room(self):
         if self.is_fully_connected():
@@ -75,7 +109,7 @@ class Room:
         self.connections[direction] = connection
 
     def render(self):
-        md_writer.print_chapter_subheading(self.full_name.title() + '<a name="' + self.full_name.title() + '"></a>')
+        md_writer.print_chapter_subheading(md_writer.phrase_with_anchor(self.full_name))
 
         for sentence in self.details:
             md_writer.print_chapter_sentence(sentence)
@@ -83,8 +117,8 @@ class Room:
         md_writer.end_chapter()
 
         if self.engraving is not None:
-            md_writer.print_chapter_sentence(templates.Template("There is an engraving on the {{location}} written in {{language}}.")
-                                             .render(location="floor|wall|ceiling",
+            md_writer.print_chapter_sentence(templates.Template("There is an engraving on {{location}} written in {{language}}.")
+                                             .render(location=self.engraving_location,
                                                      language=self.ruin.race.name + " Script|common"))
             md_writer.end_paragraph()
             self.engraving.render()
