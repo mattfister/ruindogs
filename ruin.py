@@ -5,6 +5,7 @@ from freezeword import old_language_generator
 from freezeword import templates
 from freezeword import md_writer
 from freezeword import vocab
+import ruin_race
 
 __author__ = "Matt Fister"
 
@@ -18,11 +19,6 @@ class Ruin(object):
                              adj=vocab.get_adj(),
                              noun=vocab.get_noun()).title())
 
-        self.entrance = Room()
-        self.entrance.set_connection('south', 'entrance')
-
-        self.rooms = [self.entrance]
-
         self.location_description = templates.Template('{{sentence}}').render(sentence="{{name}} is {{locationphrase}} {{placement}}.",
                                                          name=self.name.title(),
                                                          locationphrase="located in|located on|constructed on|located under",
@@ -33,12 +29,23 @@ class Ruin(object):
                                   .render(sentence="{{segment}} of {{name}} are {{state}}.",
                                           segment="Parts|Some areas|Regions|Some rooms",
                                           name=self.name.title()+"|it",
-                                          state="cursed|corrupted|flooded|{{adj} hot|{{adj} cold|frozen|foggy|inaccessible|flooded",
+                                          state="cursed|corrupted|flooded|{{adj}} hot|{{adj}} cold|frozen|foggy|inaccessible|flooded",
                                           adj="incredibly|somewhat|unbearably"))
 
         self.artifact = Artifact()
 
-        rooms_to_build = 5
+        self.race = ruin_race.get_ruin_race()
+        self.race_description = (templates.Template('{{sentence}}')
+                                 .render(sentence="It is occupied by {{plural_race}}.",
+                                         plural_race=self.race.plural_name))
+
+        self.entrance = Room(self)
+        self.entrance.set_connection('south', 'entrance')
+
+        self.rooms = [self.entrance]
+
+
+        rooms_to_build = 10
         while len(self.rooms) < rooms_to_build:
             random_room = choice(self.rooms)
             new_room = random_room.add_connected_room()
@@ -47,11 +54,14 @@ class Ruin(object):
 
         random_room.artifact = self.artifact
 
+
     def render(self):
         md_writer.print_title("Ruin Dogs")
         md_writer.print_sub_title(self.name)
+        md_writer.print_chapter_heading("Overview")
         md_writer.print_chapter_sentence(self.location_description)
         md_writer.print_chapter_sentence(self.parts_description)
+        md_writer.print_chapter_sentence(self.race_description)
         md_writer.end_paragraph()
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Artifact")

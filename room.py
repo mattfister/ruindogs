@@ -11,7 +11,8 @@ __author__ = "Matt Fister"
 
 class Room:
 
-    def __init__(self):
+    def __init__(self, ruin):
+        self.ruin = ruin
         self.simple_name = vocab.get_ruin_room()
         self.adj = vocab.get_place_adj()
 
@@ -35,7 +36,9 @@ class Room:
 
         self.engraving = None
         if random.random() < 0.5:
-            self.engraving = Engraving()
+            self.engraving = Engraving(self.ruin)
+
+
 
     def generate_room_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
@@ -57,7 +60,7 @@ class Room:
                     empty_connections[key] = value
             new_direction = random.choice(list(empty_connections.keys()))
             new_connector = Connector()
-            new_room = Room()
+            new_room = Room(self.ruin)
             self.connections[new_direction] = (new_connector, new_room)
             new_room.set_connection(self.opposite_directions[new_direction], (new_connector, self))
             return new_room
@@ -80,8 +83,9 @@ class Room:
         md_writer.end_chapter()
 
         if self.engraving is not None:
-            md_writer.print_chapter_sentence(templates.Template("There is an engraving on the {{location}}.")
-                                             .render(location="floor|wall|ceiling"))
+            md_writer.print_chapter_sentence(templates.Template("There is an engraving on the {{location}} written in {{language}}.")
+                                             .render(location="floor|wall|ceiling",
+                                                     language=self.ruin.race.name + " Script|common"))
             md_writer.end_paragraph()
             self.engraving.render()
         md_writer.end_chapter()

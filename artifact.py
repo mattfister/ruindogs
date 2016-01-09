@@ -20,15 +20,15 @@ class Artifact(object):
                              shape="rock|doll|figurine|amulet|orb|gem|crystal|sphere|cube|prism|blade|spear|monument|meteorite"))
 
         self.when_sentence = (templates.Template("When {{action}} it {{transition}} {{ending}}.")
-                              .render(action="gazed upon|touched|picked up|smelled|tasted|eaten|worn|carried|held|cradled|rubbed|thrown",
+                              .render(action="worshipped|gazed upon|touched|picked up|smelled|tasted|eaten|worn|carried|held|cradled|rubbed|thrown",
                                       transition="seems like it begins to|begins to",
                                       ending="become hot|become energized with a powerful vibration|liquify|glow with an eerie light|dissappear|"
-                                             "show an image of the future|become a shielding force|an aid to memory|become a deadly projectile|"
+                                             "show an image of the future|become a shielding force|aid memory|become a deadly projectile|project energy|tunnel into the earth|"
                                              "repel insects|frighten children|become a force of destiny|become lost|burn the mind|sing the hymn of the damned|"
                                              "curse all nearby|illuminate its surroundings"))
 
     def render(self):
-        md_writer.print_chapter_sentence('<a name="' + self.name.replace(" ", "-") + '"></a>'+"**"+self.name+"**")
+        md_writer.print_chapter_subheading('<a name="' + self.name.replace(" ", "-") + '"></a>'+self.name)
         md_writer.end_chapter()
         md_writer.print_chapter_sentence(self.form)
         md_writer.print_chapter_sentence(self.when_sentence)

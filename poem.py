@@ -7,17 +7,26 @@ __author__ = "Matt Fister"
 
 
 class Poem(object):
-    def __init__(self):
+    def __init__(self, ruin):
         self.lines = []
-        self.lines.append(self.generate_opening())
+        opening_line = self.generate_opening()
+        self.lines.append(opening_line)
         self.lines.append(self.generate_middle_line())
         while random.random() < 0.7:
+            if random.random() < 0.3:
+                self.lines.append(self.generate_opening())
             self.lines.append(self.generate_middle_line())
+
+        if (random.random() < 0.5):
+            if (random.random() < 0.5):
+                self.lines.append(opening_line)
+            else:
+                self.lines.append(self.generate_end_line())
 
     def generate_opening(self):
         return (templates.Template("{{line}}")
                 .render(line="{{metaphor}}|{{people}}",
-                        metaphor="A {{metone}} is a {{mettwo}}",
+                        metaphor="A_or_an {{metone}} is a_or_an {{mettwo}}",
                         metone=vocab.get_ogden_basic_noun(),
                         mettwo=vocab.get_noun(),
                         people="{{peoplephrase}} {{peopleare}}",
@@ -26,11 +35,20 @@ class Poem(object):
 
     def generate_middle_line(self):
         return (templates.Template("{{line}}")
-                .render(line="{{list}}|{{butphrase}}",
+                .render(line="{{list}}|{{list2}}|{{butphrase}}",
                         list="{{adj1}}, {{adj2}}, {{adj3}}",
+                        list2="{{adj1}} and {{adj2}}",
                         adj1=vocab.get_adj(), adj2=vocab.get_adj(), adj3=vocab.get_adj(),
                         butphrase="{{butword}} {{adj1}}",
                         butword="yet|but|yet never|but never|ever|always"))
+
+    def generate_end_line(self):
+        return (templates.Template("{{line}}")
+                .render(line="{{youline}}",
+                        youline="you {{verb_phrase}} {{noun}}",
+                        verb_phrase="must be|will be|shall be|must never be|are not|are",
+                        noun="destroyed|cursed|eaten|consumed|loved|captured|frozen|punished|hidden|joined|crystalized|remembered|returned"))
+
 
     def render(self):
         for line in self.lines:
