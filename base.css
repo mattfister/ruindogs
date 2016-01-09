@@ -64,7 +64,9 @@ a:hover, a:active {
 
 blockquote {
   background: #E4ECEB;
-  border-left: 10px solid #ccc;
+  border-left: 10px solid #888;
+  border-right: 10px solid #888;
+  display: inline-block;
   margin: 1.5em 10px;
   padding: 0.5em 10px;
   quotes: "\201C""\201D""\2018""\2019";
