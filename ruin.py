@@ -57,4 +57,4 @@ class Ruin(object):
         for room in self.rooms:
             room.render()
             md_writer.end_paragraph()
-        md_writer.end_novel(css='https://mattfister.github.io/nanogenmo2015/samples/base.css')
+        md_writer.end_novel(css='https://mattfister.github.io/ruindogs')
