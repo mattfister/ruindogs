@@ -4,6 +4,7 @@ from freezeword import a_or_an
 import random
 from connector import Connector
 from freezeword import md_writer
+from engraving import Engraving
 
 __author__ = "Matt Fister"
 
@@ -31,6 +32,10 @@ class Room:
         self.west = None
 
         self.artifact = None
+
+        self.engraving = None
+        if random.random() < 0.5:
+            self.engraving = Engraving()
 
     def generate_room_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
@@ -68,9 +73,19 @@ class Room:
 
     def render(self):
         md_writer.print_chapter_subheading(self.full_name.title() + '<a name="' + self.full_name.title() + '"></a>')
+
         for sentence in self.details:
             md_writer.print_chapter_sentence(sentence)
-        md_writer.print_chapter_sentence("\n\n")
+
+        md_writer.end_chapter()
+
+        if self.engraving is not None:
+            md_writer.print_chapter_sentence(templates.Template("There is an engraving on the {{location}}.")
+                                             .render(location="floor|wall|ceiling"))
+            md_writer.end_paragraph()
+            self.engraving.render()
+        md_writer.end_chapter()
+
         for prop in self.props:
             md_writer.print_list_item(templates.Template("There is {{aoran}} {{prop}} here.").render(aoran=a_or_an.a_or_an(prop), prop=prop) + "\n")
         if self.artifact is not None:
@@ -88,7 +103,4 @@ class Room:
                     leadsto="leads to|connects to|opens to",
                     room="["+connected_room.full_name+"]"+"(#"+connected_room.full_name.replace(" ","-")+")"))
 
-if __name__ == '__main__':
-    room = Room()
-    print(room.full_name)
 

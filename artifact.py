@@ -3,6 +3,7 @@ from freezeword import templates
 from freezeword import vocab
 from freezeword import md_writer
 
+
 class Artifact(object):
     def __init__(self):
         self.name = (templates.Template("{{output}}")
@@ -25,6 +26,7 @@ class Artifact(object):
                                              "show an image of the future|become a shielding force|an aid to memory|become a deadly projectile|"
                                              "repel insects|frighten children|become a force of destiny|become lost|burn the mind|sing the hymn of the damned|"
                                              "curse all nearby|illuminate its surroundings"))
+
     def render(self):
         md_writer.print_chapter_sentence('<a name="' + self.name.replace(" ", "-") + '"></a>'+"**"+self.name+"**")
         md_writer.end_chapter()

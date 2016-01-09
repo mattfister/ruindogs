@@ -4,14 +4,20 @@ from random import choice
 from freezeword import old_language_generator
 from freezeword import templates
 from freezeword import md_writer
-
+from freezeword import vocab
 
 __author__ = "Matt Fister"
 
 
 class Ruin(object):
     def __init__(self):
-        self.name = templates.Template("The Ruin {{output}}").render(output="{{wordone}}|{{wordone}} {{wordtwo}}", wordone=old_language_generator.random_word(), wordtwo=old_language_generator.random_word()).title()
+        self.name = (templates.Template("{{output}}")
+                     .render(output="{{old1}}|{{old1}} {{old2}}|The {{adj}} {{noun}}",
+                             old1=old_language_generator.random_word(),
+                             old2=old_language_generator.random_word(),
+                             adj=vocab.get_adj(),
+                             noun=vocab.get_noun()).title())
+
         self.entrance = Room()
         self.entrance.set_connection('south', 'entrance')
 
@@ -27,7 +33,7 @@ class Ruin(object):
                                   .render(sentence="{{segment}} of {{name}} are {{state}}.",
                                           segment="Parts|Some areas|Regions|Some rooms",
                                           name=self.name.title()+"|it",
-                                          state="cursed|corrupted|flooded|{adj} hot|{adj} cold|frozen|foggy|inaccessible|flooded",
+                                          state="cursed|corrupted|flooded|{{adj} hot|{{adj} cold|frozen|foggy|inaccessible|flooded",
                                           adj="incredibly|somewhat|unbearably"))
 
         self.artifact = Artifact()
@@ -57,4 +63,4 @@ class Ruin(object):
         for room in self.rooms:
             room.render()
             md_writer.end_paragraph()
-        md_writer.end_novel(css='https://mattfister.github.io/ruindogs')
+        md_writer.end_novel(css='https://mattfister.github.io/ruindogs/base.css')
