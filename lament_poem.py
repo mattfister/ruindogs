@@ -71,7 +71,7 @@ class LamentPoem(object):
                 .render(line="{{lament}}",
                         lament="{{poor_word}} {{poor_phrase}}",
                         poor_phrase="{{poor_verb}} {{object}}|{{poor_subject}} {{poor_statement}}",
-                        poor_subject="the world|my life|my fate|our fate|life|death|everything",
+                        poor_subject="the memory of you|the world|my life|my fate|our fate|life|death|everything",
                         poor_statement="is sadness|is empty|is poor|is cruel|is hopeless|is nothing|is darkness|is death",
                         poor_word="O!|O|Oh|Poor|Dear|My",
                         poor_verb="sorry|sad|pitiful|cruel|weak|meak|terrible|dire",
