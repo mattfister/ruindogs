@@ -6,7 +6,7 @@ import random
 __author__ = "Matt Fister"
 
 
-class Poem(object):
+class FreeVersePoem(object):
     def __init__(self, ruin):
         self.ruin = ruin
         self.lines = []
