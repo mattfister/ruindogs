@@ -5,6 +5,8 @@ import random
 from connector import Connector
 from freezeword import md_writer
 from engraving import Engraving
+from enemy import Enemy
+from freezeword import write_out_list
 
 __author__ = "Matt Fister"
 
@@ -22,6 +24,13 @@ class Room:
 
         self.details = []
 
+        self.enemies = []
+        while random.random() < 0.5:
+            self.enemies.append(Enemy(ruin))
+
+        if len(self.enemies) > 0:
+            self.details.append(self.generate_enemy_description())
+
         if random.random() < 0.5:
             self.details.append(self.generate_flora_description())
 
@@ -33,6 +42,8 @@ class Room:
 
         if random.random() < 0.5:
             self.details.append(self.generate_floor_description())
+
+
 
         random.shuffle(self.details)
 
@@ -51,9 +62,14 @@ class Room:
         self.engraving_location = random.choice(["the wall","the floor","the ceiling","a monolith","a tablet","a stone"])
 
         self.engraving = None
-        if random.random() < 0.5:
+        if random.random() < 0.25:
             self.engraving = Engraving(self.ruin)
 
+    def generate_enemy_description(self):
+        if len(self.enemies) > 1:
+            return "There are " + write_out_list.write_out_list(self.enemies, False) + " here."
+        else:
+            return "There is " + self.enemies[0].__str__() + " here."
 
     def generate_flora_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
