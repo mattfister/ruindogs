@@ -75,7 +75,7 @@ class LamentPoem(object):
                         poor_statement="is sadness|is empty|is poor|is cruel|is hopeless|is nothing|is darkness|is death",
                         poor_word="O!|O|Oh|Poor|Dear|My",
                         poor_verb="sorry|sad|pitiful|cruel|weak|meak|terrible|dire",
-                        object="world|us|you|we|fate|cruelty|suffering|sadness|coldness|stars"))
+                        object="world|life|destiny|soul|spirit|existence|being|prophecy|god||you|we|fate|cruelty|suffering|sadness|coldness|stars"))
 
     def generate_middle_line(self, rhyme):
         last_word = vocab.get_adj()
