@@ -10,21 +10,23 @@ class Poem(object):
     def __init__(self, ruin):
         self.ruin = ruin
         self.lines = []
-        opening_line = self.generate_opening()
+
+    def generate_standard_poem(self):
+        opening_line = self.generate_standard_opening()
         self.lines.append(opening_line)
-        self.lines.append(self.generate_middle_line())
+        self.lines.append(self.generate_standard_middle_line())
         while random.random() < 0.7:
             if random.random() < 0.3:
-                self.lines.append(self.generate_opening())
-            self.lines.append(self.generate_middle_line())
+                self.lines.append(self.generate_standard_opening())
+            self.lines.append(self.generate_standard_middle_line())
 
         if (random.random() < 0.5):
             if (random.random() < 0.5):
                 self.lines.append(opening_line)
             else:
-                self.lines.append(self.generate_end_line())
+                self.lines.append(self.generate_standard_end_line())
 
-    def generate_opening(self):
+    def generate_standard_opening(self):
         artifact_name = md_writer.phrase_as_link(self.ruin.artifact.name)
         return (templates.Template("{{line}}")
                 .render(line="{{metaphor}}|{{people}}|{{artifact}}|{{lament}}",
@@ -40,7 +42,7 @@ class Poem(object):
                         peoplephrase="We are|You are|They are|All of us are",
                         peopleare="cursed|dying|corrupted|free|joyful|sorrowful|lost|frozen|damned|hidden|love|maddened|envious"))
 
-    def generate_middle_line(self):
+    def generate_standard_middle_line(self):
         return (templates.Template("{{line}}")
                 .render(line="{{list}}|{{list2}}|{{butphrase}}",
                         list="{{adj1}}, {{adj2}}, {{adj3}}",
@@ -49,7 +51,7 @@ class Poem(object):
                         butphrase="{{butword}} {{adj1}}",
                         butword="yet|but|yet never|but never|ever|always"))
 
-    def generate_end_line(self):
+    def generate_standard_end_line(self):
         return (templates.Template("{{line}}")
                 .render(line="{{youline}}",
                         youline="you {{verb_phrase}} {{noun}}",
