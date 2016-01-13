@@ -2,7 +2,7 @@ from freezeword import old_language_generator
 from freezeword import templates
 from freezeword import vocab
 from freezeword import md_writer
-
+import random
 
 class Artifact(object):
     def __init__(self):
@@ -19,6 +19,13 @@ class Artifact(object):
                              adj="broken|smooth|warm|cold|sharp|wet|soft|hard|mushy|transparent|glassy|opaque",
                              shape="rock|doll|figurine|amulet|orb|gem|crystal|sphere|cube|prism|blade|spear|monument|meteorite"))
 
+        self.description_sentences = []
+        if random.random() < 0.5:
+            self.description_sentences.append(templates.Template("{{thing}} {{verbs}} {{direction}} it.")
+                                              .render(thing="light|water|gravity|air|psychic energy|magic|cacophony|power|fire",
+                                                      verbs="bends|shifts|flows|pours|incinerates|glows|slides|slips",
+                                                      direction="towards|from|away from|around|near").capitalize())
+
         self.when_sentence = (templates.Template("When {{action}} it {{transition}} {{ending}}.")
                               .render(action="worshipped|gazed upon|touched|picked up|smelled|tasted|eaten|worn|carried|held|cradled|rubbed|thrown",
                                       transition="seems like it begins to|begins to",
@@ -31,6 +38,8 @@ class Artifact(object):
         md_writer.print_chapter_subheading(md_writer.phrase_with_anchor(self.name))
         md_writer.end_chapter()
         md_writer.print_chapter_sentence(self.form)
+        for sentence in self.description_sentences:
+            md_writer.print_chapter_sentence(sentence)
         md_writer.print_chapter_sentence(self.when_sentence)
         md_writer.end_chapter()
 

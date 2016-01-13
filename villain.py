@@ -18,4 +18,4 @@ class Villain(object):
                                                gender=self.gender))
 
     def __str__(self):
-        return a_or_an.a_or_an(self.race.name) + ' ' + self.race.name + ' ' + self.job
+        return self.name + " The " + self.quality
