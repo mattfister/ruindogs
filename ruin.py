@@ -80,6 +80,7 @@ class Ruin(object):
         md_writer.print_chapter_sentence(self.race_description)
         md_writer.print_chapter_sentence(self.villain_sentence)
         md_writer.print_chapter_sentence(self.race_villain_relation_sentence)
+        md_writer.print_chapter_sentence(self.villain.motivation_description)
         md_writer.end_paragraph()
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Artifact")
