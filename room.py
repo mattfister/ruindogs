@@ -58,6 +58,7 @@ class Room:
         self.west = None
 
         self.artifact = None
+        self.villain = None
 
         self.engraving_location = random.choice(["the wall","the floor","the ceiling","a monolith","a tablet","a stone"])
 
@@ -69,7 +70,7 @@ class Room:
         if len(self.enemies) > 1:
             return "There are " + write_out_list.write_out_list(self.enemies, False) + " here."
         else:
-            return "There is " + self.enemies[0].__str__() + " here."
+            return "There is " + self.enemies[0].__str__() + " are here."
 
     def generate_flora_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
@@ -141,9 +142,12 @@ class Room:
         md_writer.end_chapter()
 
         for prop in self.props:
-            md_writer.print_list_item(templates.Template("There is {{aoran}} {{prop}} here.").render(aoran=a_or_an.a_or_an(prop), prop=prop) + "\n")
+            md_writer.print_list_item(templates.Template("There is a_or_an {{prop}} here.").render(prop=prop) + "\n")
         if self.artifact is not None:
-            md_writer.print_list_item(templates.Template("{{artifact}} is here.").render(artifact="["+self.artifact.name+"]"+"(#"+self.artifact.name.replace(" ", "-")+")") + "\n")
+            md_writer.print_list_item(templates.Template("{{artifact}} is here.").render(artifact=md_writer.phrase_as_link(self.artifact.name)) + "\n")
+        if self.villain is not None:
+            md_writer.print_list_item(templates.Template("{{villain}} is here.").render(villain=md_writer.phrase_as_link(self.villain.__str__())) + "\n")
+
         for key, val in self.connections.items():
             if val is None:
                 pass

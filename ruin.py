@@ -33,6 +33,11 @@ class Ruin(object):
                                           state="cursed|corrupted|flooded|{{adj}} hot|{{adj}} cold|frozen|foggy|inaccessible|flooded",
                                           adj="incredibly|somewhat|unbearably"))
 
+        self.circumstances_description = (templates.Template('{{sentence}}')
+                                          .render(sentence="A {{outside_thing}} is happening outside.|The ruin is {{ruin_becoming}}.",
+                                                  outside_thing="massive storm|battle between raiders|solar eclipse|massive flood|windstorm|blizzard|lunar eclipse|",
+                                                  ruin_becoming="flooding|coming to life|sinking into the earth|collapsing slowly|burning|larger on the inside than the outside"))
+
         self.artifact = Artifact()
 
         self.race = ruin_race.get_ruin_race()
@@ -43,18 +48,22 @@ class Ruin(object):
         self.villain = Villain(self)
 
         self.villain_sentence = (templates.Template('{{sentence}}')
-                                 .render(sentence="{{name}} The {{quality}}, a_or_an {{race}} {{job}} is here.",
-                                         name=self.villain.name,
-                                         quality=self.villain.quality,
+                                 .render(sentence="{{villain}}, a_or_an {{race}} {{job}} is here.",
+                                         villain=md_writer.phrase_with_anchor(self.villain.__str__()),
                                          race=self.villain.race.name,
                                          job=self.villain.job))
 
         self.race_villain_relation_sentence = (templates.Template("{{sentence}}")
-                                               .render(sentence="The {{race_name}} {{relation}} {{villain_name}} The {{quality}}.",
+                                               .render(sentence="The {{race_name}} {{relation}} {{villain}}.",
                                                        race_name=self.race.plural_name,
                                                        relation="are the slaves of|have been charmed by|are ruled by|worship|are the minions of|are the soldiers of|are battling",
-                                                       villain_name=self.villain.name,
-                                                       quality=self.villain.quality))
+                                                       villain=self.villain.__str__()))
+
+        self.villain_artifact_relation = (templates.Template("{{sentence}}")
+                                          .render(sentence="{{villain}} is trying to {{relation}} {{artifact}}.",
+                                                  villain=self.villain.__str__(),
+                                                  relation="find|discover|understand|exploit|use|hide|destroy|steal|recover",
+                                                  artifact=md_writer.phrase_as_link(self.artifact.name)))
 
         self.entrance = Room(self)
         self.entrance.set_connection('south', 'entrance')
@@ -70,6 +79,8 @@ class Ruin(object):
                 self.rooms.append(new_room)
 
         random_room.artifact = self.artifact
+        random_room = choice(self.rooms)
+        random_room.villain = self.villain
 
     def render(self):
         md_writer.print_title("Ruin Dogs")
@@ -77,9 +88,11 @@ class Ruin(object):
         md_writer.print_chapter_heading("Overview")
         md_writer.print_chapter_sentence(self.location_description)
         md_writer.print_chapter_sentence(self.parts_description)
+        md_writer.print_chapter_sentence(self.circumstances_description)
         md_writer.print_chapter_sentence(self.race_description)
         md_writer.print_chapter_sentence(self.villain_sentence)
         md_writer.print_chapter_sentence(self.race_villain_relation_sentence)
+        md_writer.print_chapter_sentence(self.villain_artifact_relation)
         md_writer.end_paragraph()
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Artifact")

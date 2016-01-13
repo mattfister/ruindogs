@@ -10,6 +10,7 @@ class FreeVersePoem(object):
     def __init__(self, ruin):
         self.ruin = ruin
         self.lines = []
+        self.generate_standard_poem()
 
     def generate_standard_poem(self):
         opening_line = self.generate_standard_opening()

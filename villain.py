@@ -14,4 +14,4 @@ class Villain(object):
         self.quality = random.choice([vocab.get_negative_quality(), vocab.get_negative_quality()]).title()
 
     def __str__(self):
-        return a_or_an.a_or_an(self.race.name) + ' ' + self.race.name + ' ' + self.job
+        return self.name + " The " + self.quality
