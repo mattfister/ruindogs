@@ -50,7 +50,9 @@ class Room:
         self.connections = {'north': None, 'south': None, 'east': None, 'west': None}
         self.opposite_directions = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
 
-        self.props = [vocab.get_fantasy_prop(), vocab.get_fantasy_prop()]
+        self.props = []
+        while random.random() < 0.25:
+            self.props.append(vocab.get_fantasy_prop())
 
         self.north = None
         self.south = None

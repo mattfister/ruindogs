@@ -26,13 +26,26 @@ class Artifact(object):
                                                       verbs="bends|shifts|flows|pours|incinerates|glows|slides|slips",
                                                       direction="towards|from|away from|around|near").capitalize())
 
-        self.when_sentence = (templates.Template("When {{action}} it {{transition}} {{ending}}.")
-                              .render(action="worshipped|gazed upon|touched|picked up|smelled|tasted|eaten|worn|carried|held|cradled|rubbed|thrown",
-                                      transition="seems like it begins to|begins to",
-                                      ending="become hot|become energized with a powerful vibration|liquify|glow with an eerie light|dissappear|"
-                                             "show an image of the future|become a shielding force|aid memory|become a deadly projectile|project energy|tunnel into the earth|"
-                                             "repel insects|frighten children|become a force of destiny|become lost|burn the mind|sing the hymn of the damned|"
-                                             "curse all nearby|illuminate its surroundings"))
+        if random.random() < 0.5:
+            self.description_sentences.append(templates.Template("It is a {{adj}} {{color}} color.")
+                                              .render(adj="sickly|pale|bright|dark|medium|light|shifting",
+                                                      color=vocab.basic_colors))
+
+        if random.random() < 0.5:
+            self.description_sentences.append(templates.Template("It smells like {{scent}}.")
+                                              .render(scent=vocab.scents))
+
+        random.shuffle(self.description_sentences)
+
+        self.when_sentence = (templates.Template("When {{action}} {{transition}} {{ending}}.")
+                              .render(action="worshipped|gazed upon|touched|picked up|smelled|eaten|worn|carried|held|cradled|rubbed|thrown",
+                                      transition="it",
+                                      ending="becomes hot|become energized with a powerful vibration|liquifies|glows with an eerie light|dissappears|"
+                                             "shows an image of the future|becomes a shielding force|aids memory|becomes a deadly projectile|projects energy|tunnels into the earth|"
+                                             "repels insects|frightens children|becomes a force of destiny|becomes lost|burns the mind|sings the hymn of the damned|"
+                                             "curses all nearby|illuminates its surroundings|destroys itself|destroys others|flies into the air|floats in the air|floats above the ground|"
+                                             "leviates surrounding objects|levitates those nearby|grants power to its owner|makes its owner invisible|grants a wish|"
+                                             "emits dust|turns surrounding objects to ashes|ignites its surrroundings|grants psychic powers|changes the past|changes probabilities"))
 
     def render(self):
         md_writer.print_chapter_subheading(md_writer.phrase_with_anchor(self.name))

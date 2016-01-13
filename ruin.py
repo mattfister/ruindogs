@@ -59,11 +59,6 @@ class Ruin(object):
                                                        relation="are the slaves of|have been charmed by|are ruled by|worship|are the minions of|are the soldiers of|are battling",
                                                        villain=self.villain.__str__()))
 
-        self.villain_artifact_relation = (templates.Template("{{sentence}}")
-                                          .render(sentence="{{villain}} is trying to {{relation}} {{artifact}}.",
-                                                  villain=self.villain.__str__(),
-                                                  relation="find|discover|understand|exploit|use|hide|destroy|steal|recover",
-                                                  artifact=md_writer.phrase_as_link(self.artifact.name)))
 
         self.entrance = Room(self)
         self.entrance.set_connection('south', 'entrance')
@@ -92,7 +87,6 @@ class Ruin(object):
         md_writer.print_chapter_sentence(self.race_description)
         md_writer.print_chapter_sentence(self.villain_sentence)
         md_writer.print_chapter_sentence(self.race_villain_relation_sentence)
-        md_writer.print_chapter_sentence(self.villain_artifact_relation)
         md_writer.print_chapter_sentence(self.villain.motivation_description)
         md_writer.end_paragraph()
         md_writer.end_chapter()
