@@ -30,12 +30,10 @@ class FreeVersePoem(object):
     def generate_standard_opening(self):
         artifact_name = md_writer.phrase_as_link(self.ruin.artifact.name)
         return (templates.Template("{{line}}")
-                .render(line="{{metaphor}}|{{people}}|{{artifact}}|{{lament}}",
+                .render(line="{{metaphor}}|{{people}}|{{artifact}}",
                         artifact=artifact_name,
                         metaphor="A_or_an {{metone}} is a_or_an {{mettwo}}",
                         lament="{{poor_word}} {{poor_verb}} {{object}}",
-                        poor_word="O!|O|Oh|Poor|Dear|My",
-                        poor_verb="sorry|sad|pitiful|cruel|weak|meak|terrible|dire",
                         object="world|us|you|we|fate|cruelty|suffering|sadness|coldness|stars",
                         metone=vocab.get_ogden_basic_noun(),
                         mettwo=vocab.get_noun(),
