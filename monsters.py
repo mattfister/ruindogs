@@ -413,11 +413,11 @@ monsters = [
 ]
 
 
-def getMonster(challenge_rating, sentient=False, race=None):
+def getMonster(challenge_rating, offset=0, sentient=False, race=None):
     choices = []
     for monster in monsters:
-        if monster.challenge_rating == challenge_rating:
-            if (sentient):
+        if monster.challenge_rating >= challenge_rating-offset and monster.challenge_rating <= challenge_rating+offset:
+            if sentient:
                 if monster.sentient:
                     choices.append(monster)
             else:

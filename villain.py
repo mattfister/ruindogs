@@ -10,7 +10,7 @@ class Villain(object):
     def __init__(self, ruin):
         self.ruin = ruin
         self.race = ruin_race.get_ruin_race()
-        self.monster = monsters.getMonster(self.ruin.challenge_rating, True)
+        self.monster = monsters.getMonster(self.ruin.challenge_rating, 1, True)
         self.gender = random.choice(['male', 'female'])
         self.name = names.get_name(self.gender)
         self.quality = random.choice([vocab.get_negative_quality(), vocab.get_negative_quality()]).title()
