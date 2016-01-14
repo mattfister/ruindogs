@@ -2,6 +2,7 @@ from room import Room
 from villain import Villain
 from artifact import Artifact
 from random import choice
+import random
 from freezeword import old_language_generator
 from freezeword import templates
 from freezeword import md_writer
@@ -45,13 +46,14 @@ class Ruin(object):
                                  .render(sentence="It is occupied by {{plural_race}}.",
                                          plural_race=self.race.plural_name))
 
+        self.challenge_rating = random.randint(2, 10)
+
         self.villain = Villain(self)
 
         self.villain_sentence = (templates.Template('{{sentence}}')
-                                 .render(sentence="{{villain}}, a_or_an {{race}} {{job}} is here.",
+                                 .render(sentence="{{villain}}, a_or_an {{villain_type}} is here.",
                                          villain=md_writer.phrase_with_anchor(self.villain.__str__()),
-                                         race=self.villain.race.name,
-                                         job=self.villain.job))
+                                         villain_type=self.villain.monster.name))
 
         self.race_villain_relation_sentence = (templates.Template("{{sentence}}")
                                                .render(sentence="The {{race_name}} {{relation}} {{villain}}.",
