@@ -39,7 +39,6 @@ h3,h4,h5,h6 {
     color: #000;
 }
 
-
 h1 { font-size: 250%; }
 h2 { font-size: 175%; }
 h3 { font-size: 135%; }
@@ -61,4 +60,18 @@ a:hover, a:active {
 
 #content a:link:after, #content a:visited:after {
 			   content: " (" attr(href) ") ";
+}
+
+blockquote {
+  background: #CCC;
+  border-left: 10px solid #888;
+  border-right: 10px solid #888;
+  display: inline-block;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote p {
+    line-height: 0em;
 }
