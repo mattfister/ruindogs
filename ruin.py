@@ -9,6 +9,7 @@ from freezeword import md_writer
 from freezeword import vocab
 import monsters
 import ruin_race
+import grapher
 
 __author__ = "Matt Fister"
 
@@ -50,8 +51,6 @@ class Ruin(object):
                                  .render(sentence="It is occupied by {{plural_race}}.",
                                          plural_race=self.race))
 
-
-
         self.villain = Villain(self)
 
         self.villain_sentence = (templates.Template('{{sentence}}')
@@ -65,12 +64,10 @@ class Ruin(object):
                                                        relation="are the slaves of|have been charmed by|are ruled by|worship|are the minions of|are the soldiers of|are battling",
                                                        villain=self.villain.__str__()))
 
-
         self.entrance = Room(self)
         self.entrance.set_connection('south', 'entrance')
 
         self.rooms = [self.entrance]
-
 
         rooms_to_build = 10
         while len(self.rooms) < rooms_to_build:
@@ -83,7 +80,16 @@ class Ruin(object):
         random_room = choice(self.rooms)
         random_room.villain = self.villain
 
+    def room_in_position(self, pos):
+        for room in self.rooms:
+            if pos[0] == 0 and pos[1] == -1:
+                return True
+            if pos[0] == room.pos[0] and pos[1] == room.pos[1]:
+                return True
+        return False
+
     def render(self):
+        grapher.save_graph(self)
         md_writer.print_title("Ruin Dogs")
         md_writer.print_sub_title(self.name)
         md_writer.print_chapter_heading("Overview")
@@ -102,7 +108,8 @@ class Ruin(object):
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Locations")
         md_writer.end_chapter()
+        md_writer.insert_image('../output/images/out.png', 'layout')
         for room in self.rooms:
             room.render()
             md_writer.end_paragraph()
-        md_writer.end_novel(css='https://mattfister.github.io/ruindogs/base.css')
+        md_writer.end_novel(css='http://mattfister.github.io/ruindogs/base.css')

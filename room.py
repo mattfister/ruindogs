@@ -1,11 +1,9 @@
 from freezeword import vocab
 from freezeword import templates
-from freezeword import a_or_an
 import random
 from connector import Connector
 from freezeword import md_writer
 from engraving import Engraving
-from enemy import Enemy
 from freezeword import write_out_list
 import monsters
 
@@ -14,7 +12,7 @@ __author__ = "Matt Fister"
 
 class Room:
 
-    def __init__(self, ruin):
+    def __init__(self, ruin, pos=[0,0]):
         self.ruin = ruin
         self.simple_name = vocab.get_ruin_room()
         self.adj = vocab.get_place_adj()
@@ -74,6 +72,8 @@ class Room:
         if random.random() < 0.25:
             self.engraving = Engraving(self.ruin)
 
+        self.pos = pos
+
     def generate_enemy_description(self):
         if len(self.enemies) > 1:
             return "There are " + write_out_list.write_out_list_and_collect(self.enemies, False) + " here."
@@ -119,7 +119,22 @@ class Room:
                     empty_connections[key] = value
             new_direction = random.choice(list(empty_connections.keys()))
             new_connector = Connector()
-            new_room = Room(self.ruin)
+
+            pos = [0,0]
+            if new_direction == 'north':
+                pos=[self.pos[0], self.pos[1]+1]
+            elif new_direction == 'east':
+                pos=[self.pos[0]+1, self.pos[1]]
+            elif new_direction == 'west':
+                pos=[self.pos[0]-1, self.pos[1]]
+            else: # south
+                pos=[self.pos[0], self.pos[1]-1]
+
+            if self.ruin.room_in_position(pos):
+                return None
+
+            new_room = Room(self.ruin, pos)
+
             self.connections[new_direction] = (new_connector, new_room)
             new_room.set_connection(self.opposite_directions[new_direction], (new_connector, self))
             return new_room
