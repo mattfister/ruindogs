@@ -1,10 +1,11 @@
 import random
 from freezeword import a_or_an
+import monsters
 
 class Enemy(object):
     def __init__(self, ruin):
         self.ruin = ruin
-        self.race = ruin.race.name
+        self.race = ruin.race
         self.job = random.choice(ruin.race.classes)
 
     def __str__(self):

@@ -7,6 +7,7 @@ from freezeword import old_language_generator
 from freezeword import templates
 from freezeword import md_writer
 from freezeword import vocab
+import monsters
 import ruin_race
 
 __author__ = "Matt Fister"
@@ -14,6 +15,9 @@ __author__ = "Matt Fister"
 
 class Ruin(object):
     def __init__(self):
+
+        self.challenge_rating = random.randint(2, 10)
+
         self.name = (templates.Template("{{output}}")
                      .render(output="{{old1}}|{{old1}} {{old2}}|The {{adj}} {{noun}}",
                              old1=old_language_generator.random_word(),
@@ -35,18 +39,18 @@ class Ruin(object):
                                           adj="incredibly|somewhat|unbearably"))
 
         self.circumstances_description = (templates.Template('{{sentence}}')
-                                          .render(sentence="A {{outside_thing}} is happening outside.|The ruin is {{ruin_becoming}}.",
-                                                  outside_thing="massive storm|battle between raiders|solar eclipse|massive flood|windstorm|blizzard|lunar eclipse|",
+                                          .render(sentence="A_or_an {{outside_thing}} is happening outside.|The ruin is {{ruin_becoming}}.",
+                                                  outside_thing="massive storm|battle between raiders|solar eclipse|massive flood|windstorm|blizzard|lunar eclipse",
                                                   ruin_becoming="flooding|coming to life|sinking into the earth|collapsing slowly|burning|larger on the inside than the outside"))
 
         self.artifact = Artifact()
 
-        self.race = ruin_race.get_ruin_race()
+        self.race = monsters.get_race(self.challenge_rating)
         self.race_description = (templates.Template('{{sentence}}')
                                  .render(sentence="It is occupied by {{plural_race}}.",
-                                         plural_race=self.race.plural_name))
+                                         plural_race=self.race))
 
-        self.challenge_rating = random.randint(2, 10)
+
 
         self.villain = Villain(self)
 
@@ -57,7 +61,7 @@ class Ruin(object):
 
         self.race_villain_relation_sentence = (templates.Template("{{sentence}}")
                                                .render(sentence="The {{race_name}} {{relation}} {{villain}}.",
-                                                       race_name=self.race.plural_name,
+                                                       race_name=self.race,
                                                        relation="are the slaves of|have been charmed by|are ruled by|worship|are the minions of|are the soldiers of|are battling",
                                                        villain=self.villain.__str__()))
 

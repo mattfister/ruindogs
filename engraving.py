@@ -12,8 +12,8 @@ class Engraving(object):
             if random.random() < 0.5:
                 self.content = FreeVersePoem(ruin)
             else:
-                #self.content = LamentPoem(ruin)
-                self.content = FreeVersePoem(ruin)
+                self.content = LamentPoem(ruin)
+                #self.content = FreeVersePoem(ruin)
         else:
             self.content = Journal_Entry(ruin)
 

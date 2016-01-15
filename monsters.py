@@ -1,4 +1,5 @@
 import random
+from freezeword import a_or_an
 
 
 class Monster(object):
@@ -8,6 +9,18 @@ class Monster(object):
         self.sentient = sentient
         self.race = race
         self.challenge_rating = challenge_rating
+
+    def __str__(self):
+        return self.name
+
+    def __hash__(self):
+        return hash(self.name)
+
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return self.name == other.name
+
 
 monsters = [
     Monster("Awakened Shrub", "Awakened Shrubs",0),
@@ -122,7 +135,7 @@ monsters = [
     Monster("Lizardfolk", "Lizardfolk", 1/2, True, "Lizardfolk"),
     Monster("Magma Mephit", "Magma Mephits", 1/2),
     Monster("Magmin", "Magmins", 1/2),
-    Monster("Myconid Adult", "Myconid Adults", 1/2, True, "Myconid"),
+    Monster("Myconid Adult", "Myconid Adults", 1/2, True, "Myconids"),
     Monster("Orc", "Orcs", 1/2, "Orc"),
     Monster("Piercer", "Piercers", 1/2),
     Monster("Reef Shark", "Reef Sharks", 1/2),
@@ -413,7 +426,7 @@ monsters = [
 ]
 
 
-def getMonster(challenge_rating, offset=0, sentient=False, race=None):
+def get_monster(challenge_rating, offset=0, sentient=False):
     choices = []
     for monster in monsters:
         if monster.challenge_rating >= challenge_rating-offset and monster.challenge_rating <= challenge_rating+offset:
@@ -423,6 +436,51 @@ def getMonster(challenge_rating, offset=0, sentient=False, race=None):
             else:
                 choices.append(monster)
     return random.choice(choices)
+
+
+def get_race(challenge_rating):
+    candidate_monsters = []
+    for monster in monsters:
+        if monster.race is not None:
+            candidate_monsters.append(monster)
+
+    lowest_level_monsters_by_race = {}
+    candidate_races = []
+    for monster in candidate_monsters:
+        if not monster.race in lowest_level_monsters_by_race.keys() and monster.challenge_rating < challenge_rating:
+            lowest_level_monsters_by_race[monster.race] = monster
+            candidate_races.append(monster.race)
+        #else:
+        #    if monster.challenge_rating < lowest_level_monsters_by_race[monster.race].challenge_rating:
+        #        candidate_monsters[monster.race] = monster
+
+    return random.choice(candidate_races)
+
+
+def get_monster_under_cr(challenge_rating, race=None):
+    candidates = []
+    for monster in monsters:
+        if race is None:
+            if monster.challenge_rating <= challenge_rating:
+                candidates.append(monster)
+        else:
+            if monster.challenge_rating <= challenge_rating and race == monster.race:
+                candidates.append(monster)
+    if len(candidates) == 0:
+        return None
+    return random.choice(candidates)
+
+def build_encounter(challenge_rating, race=None):
+    cr = challenge_rating
+    encounter = []
+    while cr > 0:
+        monster = get_monster_under_cr(challenge_rating, race)
+        if monster == None:
+            break
+        encounter.append(monster)
+        cr -= monster.challenge_rating
+    return encounter
+
 
 #
 # 16

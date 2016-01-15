@@ -7,6 +7,7 @@ from freezeword import md_writer
 from engraving import Engraving
 from enemy import Enemy
 from freezeword import write_out_list
+import monsters
 
 __author__ = "Matt Fister"
 
@@ -25,8 +26,13 @@ class Room:
         self.details = []
 
         self.enemies = []
-        while random.random() < 0.5:
-            self.enemies.append(Enemy(ruin))
+
+        if random.random() < 0.5:
+            if random.random() < 0.5:
+                self.enemies = monsters.build_encounter(self.ruin.challenge_rating, self.ruin.race)
+            else:
+                self.enemies = monsters.build_encounter(self.ruin.challenge_rating)
+
 
         if len(self.enemies) > 0:
             self.details.append(self.generate_enemy_description())
@@ -70,9 +76,9 @@ class Room:
 
     def generate_enemy_description(self):
         if len(self.enemies) > 1:
-            return "There are " + write_out_list.write_out_list(self.enemies, False) + " here."
+            return "There are " + write_out_list.write_out_list_and_collect(self.enemies, False) + " here."
         else:
-            return "There is " + self.enemies[0].__str__() + " are here."
+            return "There is " + write_out_list.write_out_list(self.enemies, False) + " here."
 
     def generate_flora_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
@@ -85,9 +91,9 @@ class Room:
 
     def generate_atmosphere_description(self):
         return (templates.Template("{{sentence}}")
-                .render(sentence="The air {{smells_or_tastes}} {{smell}} here.",
-                        smells_or_tastes="smells|tastes|seems",
-                        smell="salty|like ozone|like bloody|musty|dry|magically charged|humid|nauseating|poisonous|sticky"))
+                .render(sentence="The air {{smells_or_tastes}} like {{smell}} here.",
+                        smells_or_tastes="smells|tastes",
+                        smell=vocab.scents))
 
     def generate_walls_description(self):
         return (templates.Template("{{sentence}}")
@@ -138,7 +144,7 @@ class Room:
         if self.engraving is not None:
             md_writer.print_chapter_sentence(templates.Template("There is an engraving on {{location}} written in {{language}}.")
                                              .render(location=self.engraving_location,
-                                                     language=self.ruin.race.name + " Script|common"))
+                                                     language=self.ruin.race + " Script|common"))
             md_writer.end_paragraph()
             self.engraving.render()
         md_writer.end_chapter()
