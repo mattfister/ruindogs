@@ -25,9 +25,12 @@ class Room:
 
         self.enemies = []
 
+        racial = False
+
         if random.random() < 0.5:
             if random.random() < 0.5:
                 self.enemies = monsters.build_encounter(self.ruin.challenge_rating, self.ruin.race)
+                racial = True
             else:
                 self.enemies = monsters.build_encounter(self.ruin.challenge_rating)
 
@@ -46,8 +49,6 @@ class Room:
 
         if random.random() < 0.5:
             self.details.append(self.generate_floor_description())
-
-
 
         random.shuffle(self.details)
 

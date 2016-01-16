@@ -72,10 +72,10 @@ class LamentPoem(object):
                         lament="{{poor_word}} {{poor_phrase}}",
                         poor_phrase="{{poor_verb}} {{object}}|{{poor_subject}} {{poor_statement}}",
                         poor_subject="the memory of you|the world|my life|my fate|our fate|life|death|everything",
-                        poor_statement="is sadness|is empty|is poor|is cruel|is hopeless|is nothing|is darkness|is death",
-                        poor_word="O!|O|Oh|Poor|Dear|My",
+                        poor_statement="is misery|is sorrow|gives me depression|is gloom|is grief|is woe|is desolate|is dejection|is melancholy|is wickedness|is savagery|is inhumane|is brutish|is sadistic|is wickedness|is mournful|is sadness|is empty|is poor|is cruel|is hopeless|is nothing|is darkness|is death",
+                        poor_word="O!|O|Oh|Poor me!|Dear me!|Oh my!",
                         poor_verb="sorry|sad|pitiful|cruel|weak|meak|terrible|dire",
-                        object="world|life|destiny|soul|spirit|existence|being|prophecy|god||you|we|fate|cruelty|suffering|sadness|coldness|stars"))
+                        object="world|life|destiny|soul|spirit|existence|being|prophecy|god|you|we|fate|cruelty|suffering|sadness|coldness|stars"))
 
     def generate_middle_line(self, rhyme):
         last_word = vocab.get_adj()
@@ -87,7 +87,9 @@ class LamentPoem(object):
 
 
         return (templates.Template("{{line}}")
-                .render(line="{{list}}|{{list2}}|{{butphrase}}",
+                .render(line="{{list}}|{{list2}}|{{butphrase}}|{{it_phrase}}",
+                        it_phrase="it is {{always_never}} {{last_adj}}",
+                        always_never = "always|never",
                         list="{{adj1}}, {{adj2}}, {{last_adj}}",
                         list2="{{adj1}} and {{last_adj}}",
                         adj1=vocab.get_adj(), adj2=vocab.get_adj(), last_adj=last_word,
@@ -113,6 +115,7 @@ class LamentPoem(object):
 
 
 if __name__ == '__main__':
-    lament = LamentPoem(None)
-    for line in lament.lines:
-        print(line)
+    for i in range(20):
+        lament = LamentPoem(None)
+        for line in lament.lines:
+            print(line)

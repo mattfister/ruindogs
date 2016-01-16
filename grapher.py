@@ -1,7 +1,5 @@
 import networkx as nx
-import random
 from matplotlib import pyplot
-
 
 def save_graph(ruin):
     G=nx.Graph()
@@ -26,6 +24,6 @@ def save_graph(ruin):
         v_offset = positions[p][0] % 4
         positions[p][1] += [0.14, -0.07, .07, -0.14][v_offset]
     nx.draw_networkx_labels(G, positions, font_size=10)
+    pyplot.tight_layout()
     pyplot.savefig("output/images/out.png", transparent=True) # save as png
-    #pyplot.show() # display
 
