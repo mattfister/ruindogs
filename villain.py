@@ -18,7 +18,7 @@ class Villain(object):
                                        .render(motivation="{{religion}}|{{artifact}}",
                                                religion="is founding a new religion",
                                                artifact="is trying to {{relation}} {{artifact_name}}",
-                                               artifact_name=md_writer.phrase_as_link(self.ruin.artifact.name),
+                                               artifact_name=md_writer.phrase_as_anchor_link(self.ruin.artifact.name),
                                                relation="research|find|discover|understand|exploit|use|hide|destroy|steal|recover",
                                                gender=self.gender))
 

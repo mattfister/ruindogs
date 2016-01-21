@@ -91,7 +91,7 @@ class Room:
     def describeRacialEnemyActivity(self):
         enemy_is_or_are = "is"
         enemy_name = self.enemies[0].name
-        villain_name = md_writer.phrase_as_link(self.ruin.villain.name)
+        villain_name = md_writer.phrase_as_anchor_link(self.ruin.villain.name)
         if len(self.enemies) > 1:
             enemy_is_or_are = "are"
             enemy_name = self.ruin.race
@@ -206,9 +206,9 @@ class Room:
         for prop in self.props:
             md_writer.print_list_item(templates.Template("There is a_or_an {{prop}} here.").render(prop=prop) + "\n")
         if self.artifact is not None:
-            md_writer.print_list_item(templates.Template("{{artifact}} is here.").render(artifact=md_writer.phrase_as_link(self.artifact.name)) + "\n")
+            md_writer.print_list_item(templates.Template("{{artifact}} is here.").render(artifact=md_writer.phrase_as_anchor_link(self.artifact.name)) + "\n")
         if self.villain is not None:
-            md_writer.print_list_item(templates.Template("{{villain}} is here.").render(villain=md_writer.phrase_as_link(self.villain.__str__())) + "\n")
+            md_writer.print_list_item(templates.Template("{{villain}} is here.").render(villain=md_writer.phrase_as_anchor_link(self.villain.__str__())) + "\n")
 
         for key, val in self.connections.items():
             if val is None:

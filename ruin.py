@@ -89,7 +89,9 @@ class Ruin(object):
         return False
 
     def render(self):
-        grapher.save_graph(self)
+        ruin_save_name = self.name.replace(" ", "-")
+        ruin_map_file_name = ruin_save_name + ".png"
+        grapher.save_graph(self, ruin_map_file_name)
         md_writer.print_title("Ruin Dogs")
         md_writer.print_sub_title(self.name)
         md_writer.print_chapter_heading("Overview")
@@ -108,8 +110,13 @@ class Ruin(object):
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Locations")
         md_writer.end_chapter()
-        md_writer.insert_image('../output/images/out.png', 'layout')
+        md_writer.insert_image('../output/images/' + ruin_map_file_name, 'layout')
         for room in self.rooms:
             room.render()
             md_writer.end_paragraph()
         md_writer.end_novel(css='http://mattfister.github.io/ruindogs/base.css')
+
+
+if __name__ == '__main__':
+    ruin = Ruin()
+    ruin.render()

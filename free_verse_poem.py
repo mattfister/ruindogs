@@ -28,7 +28,7 @@ class FreeVersePoem(object):
                 self.lines.append(self.generate_standard_end_line())
 
     def generate_standard_opening(self):
-        artifact_name = md_writer.phrase_as_link(self.ruin.artifact.name)
+        artifact_name = md_writer.phrase_as_anchor_link(self.ruin.artifact.name)
         return (templates.Template("{{line}}")
                 .render(line="{{metaphor}}|{{people}}|{{artifact}}",
                         artifact=artifact_name,

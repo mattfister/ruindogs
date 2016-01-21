@@ -1,7 +1,8 @@
 import networkx as nx
 from matplotlib import pyplot
 
-def save_graph(ruin):
+
+def save_graph(ruin, name="out.png"):
     G=nx.Graph()
     G.add_node("outside".title(), posxy=[0, -1])
     for room in ruin.rooms:
@@ -25,5 +26,6 @@ def save_graph(ruin):
         positions[p][1] += [0.14, -0.07, .07, -0.14][v_offset]
     nx.draw_networkx_labels(G, positions, font_size=10)
     pyplot.tight_layout()
-    pyplot.savefig("output/images/out.png", transparent=True) # save as png
+    pyplot.savefig("output/images/" + name, transparent=True) # save as png
+    pyplot.close()
 

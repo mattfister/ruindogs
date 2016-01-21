@@ -11,7 +11,7 @@ class Journal_Entry(object):
 
         room_name = 'this place'
         try:
-            md_writer.phrase_as_link(random.choice(ruin.rooms).full_name)
+            md_writer.phrase_as_anchor_link(random.choice(ruin.rooms).full_name)
         except AttributeError:
             pass
 
@@ -22,7 +22,7 @@ class Journal_Entry(object):
                                       this_place="{{ruin_name}}",
                                       state="old|young|free|starving|afraid|powerful|a coward|alone|lonely|lost|sneaky|the best|cruel|lovely|hidden",
                                       ruin_name=ruin.name,
-                                      artifact=md_writer.phrase_as_link(ruin.artifact.name),
+                                      artifact=md_writer.phrase_as_anchor_link(ruin.artifact.name),
                                       room_name=room_name,
                                       artifact_verb="found|lost|discovered|am seeking|can not find|want to find|worship",
                                       place_phrase="was injured in|hid something in|discovered|found|am looting|am defending|am hiding in|am worshipping|am fleeing"))
