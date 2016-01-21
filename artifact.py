@@ -44,7 +44,7 @@ class Artifact(object):
                                              "shows an image of the future|becomes a shielding force|aids memory|becomes a deadly projectile|projects energy|tunnels into the earth|"
                                              "repels insects|frightens children|becomes a force of destiny|becomes lost|burns the mind|sings the hymn of the damned|"
                                              "curses all nearby|illuminates its surroundings|destroys itself|destroys others|flies into the air|floats in the air|floats above the ground|"
-                                             "leviates surrounding objects|levitates those nearby|grants power to its owner|makes its owner invisible|grants a wish|"
+                                             "levitates surrounding objects|levitates those nearby|grants power to its owner|makes its owner invisible|grants a wish|"
                                              "emits dust|turns surrounding objects to ashes|ignites its surrroundings|grants psychic powers|changes the past|changes probabilities"))
 
     def render(self):

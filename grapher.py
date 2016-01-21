@@ -19,7 +19,7 @@ def save_graph(ruin):
     positions = nx.get_node_attributes(G,'posxy')
     pyplot.figure(1,figsize=(8,8))
     pyplot.title("Map of " + ruin.name.title())
-    nx.draw(G, positions, node_size=2000, node_color=(0, .7, .8), edge_color='#00aaaa', width=4, linewidths=0, with_labels=False, transparent=True)
+    nx.draw(G, positions, node_size=2000, node_color=(0, .7, .8), edge_color='#00aaaa', width=4, linewidths=0.2, with_labels=False, transparent=True)
     for p in positions:  # raise text positions
         v_offset = positions[p][0] % 4
         positions[p][1] += [0.14, -0.07, .07, -0.14][v_offset]

@@ -136,7 +136,7 @@ monsters = [
     Monster("Magma Mephit", "Magma Mephits", 1/2),
     Monster("Magmin", "Magmins", 1/2),
     Monster("Myconid Adult", "Myconid Adults", 1/2, True, "Myconids"),
-    Monster("Orc", "Orcs", 1/2, "Orc"),
+    Monster("Orc", "Orcs", 1/2, True, "Orc"),
     Monster("Piercer", "Piercers", 1/2),
     Monster("Reef Shark", "Reef Sharks", 1/2),
     Monster("Rust Monster", "Rust Monsters", 1/2),

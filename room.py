@@ -5,6 +5,7 @@ from connector import Connector
 from freezeword import md_writer
 from engraving import Engraving
 from freezeword import write_out_list
+from trap import Trap
 import monsters
 
 __author__ = "Matt Fister"
@@ -50,7 +51,13 @@ class Room:
         if random.random() < 0.5:
             self.details.append(self.generate_floor_description())
 
+        if random.random() < 0.1:
+            self.details.append("There is a trap here. " + Trap().description)
+
         random.shuffle(self.details)
+
+        if racial:
+            self.details.append(self.describeRacialEnemyActivity())
 
         self.connections = {'north': None, 'south': None, 'east': None, 'west': None}
         self.opposite_directions = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
@@ -80,6 +87,37 @@ class Room:
             return "There are " + write_out_list.write_out_list_and_collect(self.enemies, False) + " here."
         else:
             return "There is " + write_out_list.write_out_list(self.enemies, False) + " here."
+
+    def describeRacialEnemyActivity(self):
+        enemy_is_or_are = "is"
+        enemy_name = self.enemies[0].name
+        villain_name = md_writer.phrase_as_link(self.ruin.villain.name)
+        if len(self.enemies) > 1:
+            enemy_is_or_are = "are"
+            enemy_name = self.ruin.race
+
+        return (templates.Template("{{sentence}}").render(
+                sentence="{{negotiation}}|{{in_a_state}}|{{one_sleep}}|{{ritual}}|{{one_calls_for_help}}|{{one_deadly}}|{{fight_to_death}}",
+                negotiation="The {{enemy_name}} {{is_or_are}} willing to negotiate.",
+                in_a_state="The {{enemy_name}} {{is_or_are}} {{state}}.",
+                state="drunk|celebrating|sleeping|feasting|fighting amongst themselves|meditating|caring for babies",
+                one_sleep="One of the {{enemy_name}} is on watch, the rest are {{state}}.",
+                one_deadly="One of the {{enemy_name}} is {{deadly}}.",
+                deadly="pointing a ballista at the entrance|working a mechanism that can {{mechanism_result}}",
+                mechanism_result="flood the room|engulf the room in a fiery blaze|launch acid at the Ruin Dogs|lock the exits|open a trapodoor in the floor|pour {{drop}} from the ceiling",
+                drop="acid|liquid flames|a torrent of water|snakes|rats|bees|hornets|noxious gases",
+                ritual="The {{enemy_name}} {{is_or_are}} performing a ritual. If not interrupted, {{ritual_result}}.",
+                one_calls_for_help="If the {{enemy_name}} notice the Ruin Dogs, one of them will retreat and alert {{alerted}}.",
+                ritual_result="{{villain_name}} will be magically alarmed|a powerful monster will be summoned|the {{enemy_name}} will become more powerful|the ruin dogs will be weakened",
+                alerted="the others|{{villain_name}}",
+                fight_to_death="The {{enemy_name}} {{is_or_are}} {{fight}}.",
+                fight="berserk with rage|willing to fight to the death|defending this room from intruders|crazy with bloodlust",
+                enemy_name=enemy_name,
+                is_or_are=enemy_is_or_are,
+                villain_name=villain_name
+
+            ))
+
 
     def generate_flora_description(self):
         return templates.Template("{{sentence}}").render(sentence="{{growsentence}}",
