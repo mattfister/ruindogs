@@ -2,6 +2,7 @@ from ruin import Ruin
 from freezeword import md_writer
 from os import listdir
 from os.path import isfile, join
+import random
 
 __author__ = "Matt Fister"
 
@@ -13,6 +14,7 @@ if __name__ == '__main__':
         ruin.render()
     only_files = [f for f in listdir('output') if isfile(join('output', f))]
     md_writer.new_file('index')
+    random.shuffle(only_files)
     for file in only_files:
         if file.endswith('.html') and file != 'index.html':
             ruin_name = file.split('.html')[0].replace('-',' ').title()
