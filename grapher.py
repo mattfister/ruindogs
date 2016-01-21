@@ -1,6 +1,6 @@
 import networkx as nx
 from matplotlib import pyplot
-
+from freezeword import md_writer
 
 def save_graph(ruin, name="out.png"):
     G=nx.Graph()
@@ -25,7 +25,6 @@ def save_graph(ruin, name="out.png"):
         v_offset = positions[p][0] % 4
         positions[p][1] += [0.14, -0.07, .07, -0.14][v_offset]
     nx.draw_networkx_labels(G, positions, font_size=10)
-    pyplot.tight_layout()
-    pyplot.savefig("output/images/" + name, transparent=True) # save as png
+    pyplot.savefig(md_writer.output_folder+"/images/" + name, transparent=True) # save as png
     pyplot.close()
 

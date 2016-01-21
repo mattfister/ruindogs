@@ -69,7 +69,7 @@ class Ruin(object):
 
         self.rooms = [self.entrance]
 
-        rooms_to_build = 10
+        rooms_to_build = random.randint(5, 15)
         while len(self.rooms) < rooms_to_build:
             random_room = choice(self.rooms)
             new_room = random_room.add_connected_room()
@@ -110,7 +110,7 @@ class Ruin(object):
         md_writer.end_chapter()
         md_writer.print_chapter_heading("Locations")
         md_writer.end_chapter()
-        md_writer.insert_image('../output/images/' + ruin_map_file_name, 'layout')
+        md_writer.insert_image('../'+md_writer.output_folder+'/images/' + ruin_map_file_name, 'layout')
         for room in self.rooms:
             room.render()
             md_writer.end_paragraph()
