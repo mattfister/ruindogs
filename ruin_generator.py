@@ -8,7 +8,7 @@ __author__ = "Matt Fister"
 
 
 if __name__ == '__main__':
-    for i in range(100):
+    for i in range(10):
         ruin = Ruin()
         md_writer.new_file(ruin.name.replace(" ", "-"))
         ruin.render()
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     md_writer.new_file('index')
     random.shuffle(only_files)
     md_writer.print_title("Ruin Dogs")
-    md_writer.print_sub_title("V1 - Ruin Index")
+    md_writer.print_sub_title("V2 - Ruin Index")
     for file in only_files:
 
         if file.endswith('.html') and file != 'index.html':

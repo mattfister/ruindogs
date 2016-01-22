@@ -2,11 +2,18 @@ import networkx as nx
 from matplotlib import pyplot
 from freezeword import md_writer
 
+
 def save_graph(ruin, name="out.png"):
     G=nx.Graph()
-    G.add_node("outside".title(), posxy=[0, -1])
+    # Position the bottom node at 0
+    offsetY = 0;
     for room in ruin.rooms:
-        G.add_node(room.full_name.title(), posxy=room.pos)
+        if room.pos[1] < offsetY:
+            offsetY = room.pos[1]
+    offsetY = offsetY - 1
+    for room in ruin.rooms:
+        G.add_node(room.full_name.title(), posxy=[room.pos[0], room.pos[1]-offsetY])
+    G.add_node("outside".title(), posxy=[0, -offsetY - 1])
     for room in ruin.rooms:
         for key, val in room.connections.items():
             if val is None:
@@ -27,4 +34,6 @@ def save_graph(ruin, name="out.png"):
     nx.draw_networkx_labels(G, positions, font_size=10)
     pyplot.savefig(md_writer.output_folder+"/images/" + name, transparent=True) # save as png
     pyplot.close()
+    G.clear()
+
 
